@@ -5,7 +5,7 @@
 - リポジトリ: https://github.com/EngineMaker/kitchen-occupancy（public、2026-11-21 本人決定）。作業場所は em105（ホスト名 em105-claw）
 - Rust ツールできた（`cargo test` 7件）。`kitchen-occupancy fetch` で取り込み、`report` で集計。9/23〜11/20 の57日分
 - 見るページ（自分だけ）: https://claude.ai/artifact/1YsNDyaqji9w4FSj85E8vr（Data 型。data/occupancy.json・period.json を添付）
-- 次: ページの見た目の確認 → 定期更新（systemd timer）をするか決める
+- 定期更新は**しばらくしない**（2026-11-21 本人決定）。更新したいときは頼まれて手作業で（fetch → report → asset 上げ直し）
 - 対象チャンネル: 「入室ログ」（ID 1543931132389761034、サーバー ID 875792847532621824）
 - 読む Bot は **EM105-Claw を使い回す**（2026-11-21 決定。一度「新しく作る」を選んだが本人が訂正）。鍵は lifelog の `.env` に前例あり
 - 投稿に出てくる「EMS002E」がキッチンのカメラ（ユーザー談）。他のカメラの投稿も混ざっている可能性あり
