@@ -3,7 +3,9 @@
 ## 🔖 現在地（2026-11-21）
 
 - リポジトリ: https://github.com/EngineMaker/kitchen-occupancy（public、2026-11-21 本人決定）。作業場所は em105（ホスト名 em105-claw）
-- 次: Rust で投稿の時刻を全部取り込み、曜日×時間帯の稼働率を出す
+- Rust ツールできた（`cargo test` 7件）。`kitchen-occupancy fetch` で取り込み、`report` で集計。9/23〜11/20 の57日分
+- 見るページ（自分だけ）: https://claude.ai/artifact/1YsNDyaqji9w4FSj85E8vr（Data 型。data/occupancy.json・period.json を添付）
+- 次: ページの見た目の確認 → 定期更新（systemd timer）をするか決める
 - 対象チャンネル: 「入室ログ」（ID 1543931132389761034、サーバー ID 875792847532621824）
 - 読む Bot は **EM105-Claw を使い回す**（2026-11-21 決定。一度「新しく作る」を選んだが本人が訂正）。鍵は lifelog の `.env` に前例あり
 - 投稿に出てくる「EMS002E」がキッチンのカメラ（ユーザー談）。他のカメラの投稿も混ざっている可能性あり
@@ -34,3 +36,11 @@
 - 一番古い投稿は 2026-08-31。そのころは「Eufy C220」「Atom Cam 2」や `[テスト]` 付きの投稿もある → カメラ名 EMS002E で絞り、`[テスト]` は除く
 - 本文の時刻（検出時刻）と投稿時刻がずれることがある（例: 本文 19:12、投稿 19:43 JST）→ 本文の時刻を使う方がよさそう。日付は投稿日時から取る（日付をまたぐ場合に注意）
 - Discord の時刻は UTC。日本時間は +9 時間
+
+### 2026-11-21 ツールとページ
+- 「入室ログ」には住人の書き込みも混ざる → 保存するのは「人物を検出」の投稿だけにした（一度全部保存したものも消した）
+- 他のカメラ: EMS101E・EMS105A・EMS001E・EMS301E もこのチャンネルに投稿している。数えるのは EMS002E だけ
+- カメラは一度検出すると約10分あく。1時間ごとだと全部9割前後で差が見えない → **15分ごと**に区切った（`SLOT_MINUTES` で変更可）
+- 検出が10件未満の日は数えない（`MIN_PER_DAY`）。今は 10/12・10/22 の2日
+- 使い方: `~/.cargo/bin/cargo build --release` → `./target/release/kitchen-occupancy`（fetch と report の両方）
+- ページの更新は今は手作業: data/occupancy.json・period.json を artifact に asset で上げ直し、datasets の url を差し替える
